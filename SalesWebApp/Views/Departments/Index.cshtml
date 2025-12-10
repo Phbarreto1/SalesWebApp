@@ -1,14 +1,14 @@
 ﻿@model IEnumerable<SalesWebApp.Models.Entities.Department>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Departments";
 }
 
-<h1>Index</h1>
+<h1>Departments</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<button type="button" class="btn btn-success">
+    <a class="text-white" asp-action="Create">Create New</a>
+</button>
 <table class="table">
     <thead>
         <tr>
@@ -20,7 +20,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr class="table-light">
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>

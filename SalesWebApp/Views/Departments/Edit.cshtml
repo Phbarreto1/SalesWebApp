@@ -1,24 +1,22 @@
 ﻿@model SalesWebApp.Models.Entities.Department
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Departments";
 }
 
-<h1>Edit</h1>
-
-<h4>Department</h4>
+<h3>Edit</h3>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
+            <div class="form-group form-container">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group form-container">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>

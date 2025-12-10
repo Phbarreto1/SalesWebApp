@@ -1885,6 +1885,7 @@ progress {
   --bs-table-hover-color: initial;
   --bs-table-hover-bg: rgba(var(--bs-emphasis-color-rgb), 0.075);
   width: 100%;
+  margin-top: 1rem;
   margin-bottom: 1rem;
   vertical-align: top;
   border-color: var(--bs-table-border-color);
@@ -12186,8 +12187,8 @@ textarea.form-control-lg {
 }
 
 thead th {
-  font-size: 0.875rem;
-  text-transform: uppercase;
+  font-size: 1rem;
+  font-weight: bold;
 }
 
 .table-primary,

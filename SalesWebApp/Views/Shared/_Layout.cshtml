@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SalesWebApp</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-zephyr.min.css" asp-append-version="true" />
+    <title>@ViewData["Title"] - SalesWebApp</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-zephyr.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SalesWebApp.styles.css" asp-append-version="true" />
 </head>
@@ -21,9 +21,6 @@
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Departments" asp-action="Index">Departments</a>
