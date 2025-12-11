@@ -25,3 +25,15 @@ body {
     margin-top: 0px;
     margin-bottom: 15px;
 }
+
+.td-align {
+    text-align: end !important;
+}
+
+.dl-row-margin {
+    margin-bottom: 0px !important;
+}
+
+.label-container {
+    margin-bottom: 10px;
+}

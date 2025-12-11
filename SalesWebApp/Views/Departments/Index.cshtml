@@ -6,9 +6,6 @@
 
 <h1>Departments</h1>
 
-<button type="button" class="btn btn-success">
-    <a class="text-white" asp-action="Create">Create New</a>
-</button>
 <table class="table">
     <thead>
         <tr>
@@ -24,7 +21,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
-            <td>
+            <td class="td-align">
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
@@ -33,3 +30,6 @@
 }
     </tbody>
 </table>
+
+<a class="text-white btn btn-success" style="text-decoration:none" asp-action="Create">Create New</a>
+
