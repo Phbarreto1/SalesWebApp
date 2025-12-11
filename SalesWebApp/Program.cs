@@ -1,18 +1,29 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using SalesWebApp.Data;
 using SalesWebApp.Models;
 var builder = WebApplication.CreateBuilder(args);
 
+// Connect application and Database (MySQL)
 var connectionString = builder.Configuration.GetConnectionString("SalesWebAppContext");
 builder.Services.AddDbContext<SalesWebAppContext>(options =>
 options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString), mysqlOptions =>
 mysqlOptions.MigrationsAssembly("SalesWebApp")));
 
+// Register the Seeding Service (to populate the database)
+builder.Services.AddScoped<SeedingService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var seeder = services.GetRequiredService<SeedingService>();
+    seeder.Seed();
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
