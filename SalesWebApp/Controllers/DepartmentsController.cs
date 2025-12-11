@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SalesWebApp.Models;
-using SalesWebApp.Models.Entities;
 
 namespace SalesWebApp.Controllers
 {
