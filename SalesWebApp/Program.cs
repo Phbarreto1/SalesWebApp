@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SalesWebApp.Data;
 using SalesWebApp.Models;
+using SalesWebApp.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Connect application and Database (MySQL)
@@ -12,6 +14,8 @@ mysqlOptions.MigrationsAssembly("SalesWebApp")));
 
 // Register the Seeding Service (to populate the database)
 builder.Services.AddScoped<SeedingService>();
+
+builder.Services.AddScoped<SellerService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
