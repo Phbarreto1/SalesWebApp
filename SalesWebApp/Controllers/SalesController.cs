@@ -16,7 +16,7 @@ namespace SalesWebApp.Controllers
         public IActionResult Index()
         {
             var list = _salesService.FindAll();
-            return View();
+            return View(list);
         }
     }
 }
