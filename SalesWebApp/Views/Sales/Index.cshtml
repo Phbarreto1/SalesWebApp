@@ -1,7 +1,7 @@
-﻿@model IEnumerable<Seller>
+﻿@model IEnumerable<SalesRecord>
 
 @{
-    ViewData["Title"] = "Sellers";
+    ViewData["Title"] = "Sales";
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -13,16 +13,16 @@
                 @Html.DisplayNameFor(model => model.Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.Date)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Email)
+                @Html.DisplayNameFor(model => model.Amount)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BirthDate)
+                @Html.DisplayNameFor(model => model.Status)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BaseSalary)
+                @Html.DisplayNameFor(model => model.Seller)
             </th>
             <th>
 
@@ -37,16 +37,16 @@
                     @Html.DisplayFor(modelItem => item.Id)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    @Html.DisplayFor(modelItem => item.Date)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Email)
+                    @Html.DisplayFor(modelItem => item.Amount)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.BirthDate)
+                    @Html.DisplayFor(modelItem => item.Status)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.BaseSalary)
+                    @Html.DisplayFor(modelItem => item.Seller.Name)
                 </td>
                 <td class="td-align">
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -57,4 +57,3 @@
         }
     </tbody>
 </table>
-
