@@ -26,7 +26,7 @@ body {
     margin-bottom: 15px;
 }
 
-.td-align {
+.text-align-end {
     text-align: end !important;
 }
 
@@ -37,3 +37,8 @@ body {
 .label-container {
     margin-bottom: 10px;
 }
+
+.div-padding {
+    padding: 0px;
+}
+

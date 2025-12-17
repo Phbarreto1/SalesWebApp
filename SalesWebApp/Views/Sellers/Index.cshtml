@@ -3,8 +3,16 @@
 @{
     ViewData["Title"] = "Sellers";
 }
-
-<h1>@ViewData["Title"]</h1>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6 div-padding">
+            <h1>@ViewData["Title"]</h1>
+        </div>
+        <div class="col-md-6 div-padding text-align-end">
+            <a class="text-white btn btn-success btn-lg" style="text-decoration:none" asp-action="CreateSeller">Create New</a>
+        </div>
+    </div>
+</div>
 
 <table class="table table-hover">
     <thead>
@@ -48,7 +56,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.BaseSalary)
                 </td>
-                <td class="td-align">
+                <td class="text-align-end">
                     <a asp-action="EditSeller" asp-route-id="@item.Id">Edit</a> |
                     <a asp-action="DetailsSeller" asp-route-id="@item.Id">Details</a> |
                     <a asp-action="DeleteSeller" asp-route-id="@item.Id">Delete</a>
@@ -57,5 +65,3 @@
         }
     </tbody>
 </table>
-
-<a class="text-white btn btn-success" style="text-decoration:none" asp-action="CreateSeller">Create New</a>

@@ -15,6 +15,5 @@ namespace SalesWebApp.Services
         {
             return _context.SalesRecords.ToList();
         }
-
     }
 }
