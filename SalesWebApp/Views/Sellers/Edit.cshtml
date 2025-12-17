@@ -4,12 +4,13 @@
     ViewData["Title"] = "Sellers";
 }
 
-<h3>Create a new Seller</h3>
+<h3>Edit</h3>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="CreateSeller">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Seller.Id" />
             <div class="form-group form-container">
                 <label asp-for="Seller.Name" class="control-label"></label>
                 <input asp-for="Seller.Name" class="form-control" />
@@ -32,13 +33,13 @@
             </div>
             <div class="form-group form-container">
                 <label asp-for="Seller.Department" class="control-label"></label>
-                <select asp-for="Seller.DepartmentId" asp-items="@(new SelectList(Model.Departments,"Id","Name"))" class="form-control">
+                <select asp-for="Seller.DepartmentId" asp-items="@(new SelectList(Model.Departments, "Id", "Name"))" class="form-control">
                     <option value="">Select a department</option>
                 </select>
                 <span asp-validation-for="Seller.DepartmentId" class="text-danger"></span>
             </div>
             <div class="form-group form-container">
-                <input type="submit" value="Create" class="btn btn-success" >
+                <input type="submit" value="Save" class="btn btn-success">
             </div>
         </form>
     </div>

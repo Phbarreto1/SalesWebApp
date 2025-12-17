@@ -24,22 +24,25 @@ namespace SalesWebApp.Controllers
             return View(list);
         }
 
-        public IActionResult CreateSeller()
+        public IActionResult Create()
         {
             var departments = _departmentService.FindAll();
-            var viewModel = new SellerFormViewModel { Departments = departments };
+            var viewModel = new SellerFormViewModel 
+            { 
+                Departments = departments 
+            };
             return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateSeller(Seller seller)
+        public IActionResult Create(Seller seller)
         {
             _sellerService.Insert(seller);
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult DeleteSeller(int? id)
+        public IActionResult Delete(int? id)
         {
             if(id == null)
             {
@@ -57,13 +60,13 @@ namespace SalesWebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteSeller(int id)
+        public IActionResult Delete(int id)
         {
             _sellerService.Remove(id);
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult DetailsSeller(int? id)
+        public IActionResult Details(int? id)
         {
             if(id == null)
             {
@@ -79,7 +82,7 @@ namespace SalesWebApp.Controllers
             return View(obj);
         }
 
-        public IActionResult EditSeller(int? id)
+        public IActionResult Edit(int? id)
         {
             if(id == null)
             {
@@ -93,13 +96,17 @@ namespace SalesWebApp.Controllers
             }
 
             List<Department> departments = _departmentService.FindAll();
-            SellerFormViewModel viewModel = new SellerFormViewModel { Seller = obj, Departments = departments };
+            SellerFormViewModel viewModel = new SellerFormViewModel 
+            {
+                Seller = obj,
+                Departments = departments
+            };
             return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EditSeller(int id, Seller seller)
+        public IActionResult Edit(int id, Seller seller)
         {
             if(id != seller.Id)
             {
