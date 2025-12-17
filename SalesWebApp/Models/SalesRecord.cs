@@ -17,6 +17,8 @@ namespace SalesWebApp.Models
 
         public Seller Seller { get; set; }
 
+        public int SellerId { get; set; }
+
         public SalesRecord() 
         { 
         }

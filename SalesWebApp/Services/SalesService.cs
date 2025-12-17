@@ -1,4 +1,5 @@
-﻿using SalesWebApp.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using SalesWebApp.Models;
 
 namespace SalesWebApp.Services
 {
@@ -13,7 +14,15 @@ namespace SalesWebApp.Services
 
         public List<SalesRecord> FindAll()
         {
-            return _context.SalesRecords.ToList();
+            return _context.SalesRecords
+                .Include(sr => sr.Seller)
+                .ToList();
+        }
+
+        public SalesRecord FindById(int id)
+        {
+            return _context.SalesRecords.Include(obj => obj.Seller).FirstOrDefault(obj => obj.Id == id);
+
         }
     }
 }
