@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SalesWebApp.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SalesWebApp.Controllers
 {
@@ -29,14 +30,14 @@ namespace SalesWebApp.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
 
             var department = await _context.Department
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (department == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not found" });
             }
 
             return View(department);
@@ -69,13 +70,13 @@ namespace SalesWebApp.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
 
             var department = await _context.Department.FindAsync(id);
             if (department == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not found" });
             }
             return View(department);
         }
@@ -89,7 +90,7 @@ namespace SalesWebApp.Controllers
         {
             if (id != department.Id)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
 
             if (ModelState.IsValid)
@@ -103,7 +104,7 @@ namespace SalesWebApp.Controllers
                 {
                     if (!DepartmentExists(department.Id))
                     {
-                        return NotFound();
+                        return RedirectToAction(nameof(Error), new { message = "Id not found" });
                     }
                     else
                     {
@@ -120,14 +121,14 @@ namespace SalesWebApp.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
 
             var department = await _context.Department
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (department == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not found" });
             }
 
             return View(department);
