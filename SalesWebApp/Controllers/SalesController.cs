@@ -21,15 +21,15 @@ namespace SalesWebApp.Controllers
             _sellerService = sellerService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var list = _salesRecordService.FindAll();
+            var list = await _salesRecordService.FindAllAsync();
             return View(list);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var sellers = _sellerService.FindAll();
+            var sellers = await _sellerService.FindAllAsync();
             var status = Enum.GetValues(typeof(SaleStatus))
                 .Cast<SaleStatus>()
                 .Select(s => new SelectListItem
@@ -50,11 +50,11 @@ namespace SalesWebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(SalesRecord salesRecord)
+        public async Task<IActionResult> Create(SalesRecord salesRecord)
         {
             if (!ModelState.IsValid)
             {
-                var seller = _sellerService.FindAll();
+                var seller = await _sellerService.FindAllAsync();
                 var status = Enum.GetValues(typeof(SaleStatus))
                 .Cast<SaleStatus>()
                 .Select(s => new SelectListItem
@@ -70,18 +70,18 @@ namespace SalesWebApp.Controllers
                 };
                 return View(viewModel);
             }
-            _salesRecordService.Insert(salesRecord);
+            await _salesRecordService.InsertAsync(salesRecord);
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
 
-            var obj = _salesRecordService.FindById(id.Value);
+            var obj = await _salesRecordService.FindByIdAsync(id.Value);
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not found" });
@@ -92,20 +92,20 @@ namespace SalesWebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            _salesRecordService.Remove(id);
+            await _salesRecordService.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
 
-            var obj = _salesRecordService.FindById(id.Value);
+            var obj = await _salesRecordService.FindByIdAsync(id.Value);
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not found" });
@@ -114,20 +114,20 @@ namespace SalesWebApp.Controllers
             return View(obj);
         }
 
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
 
-            var obj = _salesRecordService.FindById(id.Value);
+            var obj = await _salesRecordService.FindByIdAsync(id.Value);
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not found" });
             }
 
-            var sellers = _sellerService.FindAll();
+            var sellers = await _sellerService.FindAllAsync();
             var status = Enum.GetValues(typeof(SaleStatus))
                 .Cast<SaleStatus>()
                 .Select(s => new SelectListItem
@@ -147,11 +147,11 @@ namespace SalesWebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, SalesRecord salesRecord)
+        public async Task<IActionResult> Edit(int id, SalesRecord salesRecord)
         {
             if (!ModelState.IsValid)
             {
-                var seller = _sellerService.FindAll();
+                var seller = await _sellerService.FindAllAsync();
                 var status = Enum.GetValues(typeof(SaleStatus))
                 .Cast<SaleStatus>()
                 .Select(s => new SelectListItem
@@ -173,7 +173,7 @@ namespace SalesWebApp.Controllers
             }
             try
             {
-                _salesRecordService.Update(salesRecord);
+                await _salesRecordService.UpdateAsync(salesRecord);
                 return RedirectToAction(nameof(Index));
             }
             catch (NotFoundException e)

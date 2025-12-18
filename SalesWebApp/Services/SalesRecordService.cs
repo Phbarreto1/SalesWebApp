@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SalesWebApp.Models;
 using SalesWebApp.Services.Exceptions;
+using System.Threading.Tasks;
 
 namespace SalesWebApp.Services
 {
@@ -13,35 +14,38 @@ namespace SalesWebApp.Services
             _context = context;
         }
 
-        public List<SalesRecord> FindAll()
+        public async Task<List<SalesRecord>> FindAllAsync()
         {
-            return _context.SalesRecords
+            return await _context.SalesRecords
                 .Include(sr => sr.Seller)
-                .ToList();
+                .ToListAsync();
         }
 
-        public SalesRecord FindById(int id)
+        public async Task<SalesRecord> FindByIdAsync(int id)
         {
-            return _context.SalesRecords.Include(obj => obj.Seller).FirstOrDefault(obj => obj.Id == id);
+            return await _context.SalesRecords
+                .Include(obj => obj.Seller)
+                .FirstOrDefaultAsync(obj => obj.Id == id);
 
         }
 
-        public void Insert(SalesRecord obj)
+        public async Task InsertAsync(SalesRecord obj)
         {
             _context.Add(obj);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Remove(int id)
+        public async Task RemoveAsync(int id)
         {
-            var obj = _context.SalesRecords.Find(id);
+            var obj = await _context.SalesRecords.FindAsync(id);
             _context.SalesRecords.Remove(obj);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Update(SalesRecord obj)
+        public async Task UpdateAsync(SalesRecord obj)
         {
-            if (!_context.SalesRecords.Any(x => x.Id == obj.Id))
+            bool hasAny = await _context.SalesRecords.AnyAsync(x => x.Id == obj.Id);
+            if (!hasAny)
             {
                 throw new NotFoundException("Id not found");
             }
