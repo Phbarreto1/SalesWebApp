@@ -33,8 +33,7 @@ namespace SalesWebApp.Migrations
                         name: "FK_Seller_Department_DepartmentId",
                         column: x => x.DepartmentId,
                         principalTable: "Department",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -56,8 +55,7 @@ namespace SalesWebApp.Migrations
                         name: "FK_SalesRecords_Seller_SellerId",
                         column: x => x.SellerId,
                         principalTable: "Seller",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
