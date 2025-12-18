@@ -30,9 +30,19 @@ namespace SalesWebApp.Controllers
         public IActionResult Create()
         {
             var sellers = _sellerService.FindAll();
+            var status = Enum.GetValues(typeof(SaleStatus))
+                .Cast<SaleStatus>()
+                .Select(s => new SelectListItem
+                {
+                    Text = s.ToString(),
+                    Value = s.ToString()
+                });
+
+
             var viewModel = new SalesFormViewModel
             {
                 Sellers = sellers,
+                StatusOfSale = status,
             };
 
             return View(viewModel);
