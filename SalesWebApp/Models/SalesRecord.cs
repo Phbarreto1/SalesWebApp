@@ -7,13 +7,16 @@ namespace SalesWebApp.Models
     {
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "{0} required")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime Date { get; set; }
 
+        [Required(ErrorMessage = "{0} required")]
         [DisplayFormat(DataFormatString = "{0:C2}")]
         public double Amount { get; set; }
 
+        [Required(ErrorMessage = "{0} required")]
         public SaleStatus Status { get; set; }
 
         public Seller Seller { get; set; }

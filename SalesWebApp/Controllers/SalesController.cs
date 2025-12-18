@@ -15,9 +15,9 @@ namespace SalesWebApp.Controllers
         private readonly SalesRecordService _salesRecordService;
         private readonly SellerService _sellerService;
 
-        public SalesController(SalesRecordService salesService, SellerService sellerService)
+        public SalesController(SalesRecordService salesRecordService, SellerService sellerService)
         {
-            _salesRecordService = salesService;
+            _salesRecordService = salesRecordService;
             _sellerService = sellerService;
         }
 
@@ -52,6 +52,24 @@ namespace SalesWebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(SalesRecord salesRecord)
         {
+            if (!ModelState.IsValid)
+            {
+                var seller = _sellerService.FindAll();
+                var status = Enum.GetValues(typeof(SaleStatus))
+                .Cast<SaleStatus>()
+                .Select(s => new SelectListItem
+                {
+                    Text = s.ToString(),
+                    Value = s.ToString()
+                });
+                var viewModel = new SalesFormViewModel
+                {
+                    SalesRecord = salesRecord,
+                    Sellers = seller,
+                    StatusOfSale = status
+                };
+                return View(viewModel);
+            }
             _salesRecordService.Insert(salesRecord);
             return RedirectToAction(nameof(Index));
         }
@@ -131,6 +149,24 @@ namespace SalesWebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, SalesRecord salesRecord)
         {
+            if (!ModelState.IsValid)
+            {
+                var seller = _sellerService.FindAll();
+                var status = Enum.GetValues(typeof(SaleStatus))
+                .Cast<SaleStatus>()
+                .Select(s => new SelectListItem
+                {
+                    Text = s.ToString(),
+                    Value = s.ToString()
+                });
+                var viewModel = new SalesFormViewModel
+                {
+                    SalesRecord = salesRecord,
+                    Sellers = seller,
+                    StatusOfSale = status
+                };
+                return View(viewModel);
+            }
             if (id != salesRecord.Id)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id mismatch" });
