@@ -10,12 +10,12 @@ using System.Diagnostics;
 
 namespace SalesWebApp.Controllers
 {
-    public class SalesController : Controller
+    public class SalesRecordsController : Controller
     {
         private readonly SalesRecordService _salesRecordService;
         private readonly SellerService _sellerService;
 
-        public SalesController(SalesRecordService salesRecordService, SellerService sellerService)
+        public SalesRecordsController(SalesRecordService salesRecordService, SellerService sellerService)
         {
             _salesRecordService = salesRecordService;
             _sellerService = sellerService;
@@ -25,6 +25,16 @@ namespace SalesWebApp.Controllers
         {
             var list = await _salesRecordService.FindAllAsync();
             return View(list);
+        }
+
+        public IActionResult SimpleSearch()
+        {
+            return View();
+        }
+
+        public IActionResult GroupedSearch()
+        {
+            return View();
         }
 
         public async Task<IActionResult> Create()

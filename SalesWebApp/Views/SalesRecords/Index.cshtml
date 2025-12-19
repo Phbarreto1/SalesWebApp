@@ -6,11 +6,18 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-6 div-padding">
+        <div class="col-md-3 div-padding">
             <h1>@ViewData["Title"]</h1>
         </div>
-        <div class="col-md-6 div-padding text-align-end">
-            <a class="text-white btn btn-success btn-lg" style="text-decoration:none" asp-action="Create">Create New</a>
+        <div class="col-md-9 div-padding">
+            <div class="d-flex justify-content-end align-items-center gap-2">
+                <form asp-action="Search" class="d-flex gap-2">
+                    <input type="date" name="minDate" class="form-control input-lg" />
+                    <input type="date" name="maxDate" class="form-control input-lg" />
+                    <button type="submit" class="btn btn-info btn-lg">Search</button>
+                </form>
+                <a class="text-white btn btn-success btn-lg btn-size" style="text-decoration:none" asp-action="Create">Create new</a>
+            </div>
         </div>
     </div>
 </div>

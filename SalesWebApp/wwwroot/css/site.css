@@ -42,3 +42,8 @@ body {
     padding: 0px;
 }
 
+.input-lg {
+    height: 48px !important;
+    width: 140px !important
+}
+

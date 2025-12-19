@@ -18,6 +18,8 @@ namespace SalesWebApp.Services
         {
             return await _context.SalesRecords
                 .Include(sr => sr.Seller)
+                .OrderBy(sr => sr.Date.Month)
+                .ThenBy(sr => sr.Date.Day)
                 .ToListAsync();
         }
 
