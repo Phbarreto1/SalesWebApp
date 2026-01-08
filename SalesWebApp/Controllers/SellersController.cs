@@ -5,13 +5,12 @@ using SalesWebApp.Services;
 using SalesWebApp.Services.Exceptions;
 using System.Diagnostics;
 
-// SellersController: Manage 'Seller' CRUD
-// Depends on: 'SellerService' and 'DepartmentService' (injection by constructor)
-// Actions:
-// - Index (GET): Connects to 'SellerService', returning to the View a HTTP response with a List of Sellers
-// - Create (GET): Open the '/Sellers/Create' page with the creation forms, including the Department collection
-// - Create (POST): Create a new Seller and insert it on the Database
-// - Details (GET): Open the 'Sellers/Details' page, showing
+// SellersController: Manages 'Seller' CRUD operations.
+// Depends on: 'SellerService' and 'DepartmentService' (dependency injection).
+
+// SellerFormViewModel:
+// Is used to group 'Seller' data and the 'Departments' collection,
+// allowing the View to build a 'Department' selection dropdown.
 
 namespace SalesWebApp.Controllers
 {
@@ -26,12 +25,17 @@ namespace SalesWebApp.Controllers
             _departmentService = departmentService;
         }
 
+        // GET: Sellers
+        // Retrieves all Sellers and returns them to the View as a list.
         public async Task<IActionResult> Index()
         {
             var list = await _sellerService.FindAllAsync();
             return View(list);
         }
 
+        // GET: Sellers/Create
+        // Prepares and returns the Sellers creation form.
+        // Includes an ICollection of Departments (rendered in a selection dropdown)
         public async Task<IActionResult> Create()
         {
             var departments = await _departmentService.FindAllAsync();
@@ -42,6 +46,10 @@ namespace SalesWebApp.Controllers
             return View(viewModel);
         }
 
+        // POST: Sellers/Create
+        // Receives the Seller data submitted by the form.
+        // If the model validation fails, reloads Departments and returns the form again.
+        // If successful, inserts the Seller into the Database and redirects to Index (PRG pattern).
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Seller seller)
@@ -60,6 +68,10 @@ namespace SalesWebApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // GET: Sellers/Details/1
+        // Retrieves and displays details of the selected Seller.
+        // If it fails, redirects to Error (id not provided or not found).
+        // If successful, returns the View with the infos.
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -76,6 +88,10 @@ namespace SalesWebApp.Controllers
             return View(obj);
         }
 
+        // GET: Sellers/Edit/1
+        // Retrieves the selected Seller and returns data through an edit form.
+        // If it fails, redirects to Error (id not provided or not found).
+        // If successful, returns the View with the edit form.
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -98,6 +114,10 @@ namespace SalesWebApp.Controllers
             return View(viewModel);
         }
 
+        // POST: Sellers/Edit/1
+        // Validates and updates Seller data in the Database.
+        // If the model validation fails, reloads Departments and returns the form again.
+        // If successful, updates the Seller in the Database and redirects to Index.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Seller seller)
@@ -131,6 +151,10 @@ namespace SalesWebApp.Controllers
             }
         }
 
+        // GET: Sellers/Delete/1
+        // Retrieves the selected Seller and returns a delete confirmation page.
+        // If it fails, redirects to Error (id not provided or not found).
+        // If successful, returns the View with the delete confirmation.
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -147,6 +171,10 @@ namespace SalesWebApp.Controllers
             return View(obj);
         }
 
+        // POST: Sellers/Delete/1
+        // Removes the selected Seller from the Database.
+        // If it fails, redirects to Error.
+        // If successful, remove Seller from the Database and redirects to Index.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
