@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.WebEncoders.Testing;
 using SalesWebApp.Models;
 using SalesWebApp.Services.Exceptions;
 using System.Threading.Tasks;
@@ -25,10 +26,10 @@ namespace SalesWebApp.Services
 
         public async Task<SalesRecord> FindByIdAsync(int id)
         {
+            // var teste = await _context.SalesRecords
             return await _context.SalesRecords
                 .Include(obj => obj.Seller)
                 .FirstOrDefaultAsync(obj => obj.Id == id);
-
         }
 
         public async Task InsertAsync(SalesRecord obj)

@@ -5,6 +5,14 @@ using SalesWebApp.Services;
 using SalesWebApp.Services.Exceptions;
 using System.Diagnostics;
 
+// SellersController: Manage 'Seller' CRUD
+// Depends on: 'SellerService' and 'DepartmentService' (injection by constructor)
+// Actions:
+// - Index (GET): Connects to 'SellerService', returning to the View a HTTP response with a List of Sellers
+// - Create (GET): Open the '/Sellers/Create' page with the creation forms, including the Department collection
+// - Create (POST): Create a new Seller and insert it on the Database
+// - Details (GET): Open the 'Sellers/Details' page, showing
+
 namespace SalesWebApp.Controllers
 {
     public class SellersController : Controller
@@ -52,37 +60,6 @@ namespace SalesWebApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Id not provided" });
-            }
-
-            var obj = await _sellerService.FindByIdAsync(id.Value);
-            if(obj == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Id not found" });
-            }
-
-            return View(obj);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
-        {
-            try
-            {
-                await _sellerService.RemoveAsync(id);
-                return RedirectToAction(nameof(Index));
-            }
-            catch (IntegrityException e)
-            {
-                return RedirectToAction(nameof(Error), new { message = e.Message });
-            }
-        }
-
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -91,7 +68,7 @@ namespace SalesWebApp.Controllers
             }
 
             var obj = await _sellerService.FindByIdAsync(id.Value);
-            if(obj == null)
+            if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not found" });
             }
@@ -113,7 +90,7 @@ namespace SalesWebApp.Controllers
             }
 
             List<Department> departments = await _departmentService.FindAllAsync();
-            SellerFormViewModel viewModel = new SellerFormViewModel 
+            SellerFormViewModel viewModel = new SellerFormViewModel
             {
                 Seller = obj,
                 Departments = departments
@@ -149,6 +126,37 @@ namespace SalesWebApp.Controllers
                 return RedirectToAction(nameof(Error), new { message = e.Message });
             }
             catch (DbConcurrencyException e)
+            {
+                return RedirectToAction(nameof(Error), new { message = e.Message });
+            }
+        }
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction(nameof(Error), new { message = "Id not provided" });
+            }
+
+            var obj = await _sellerService.FindByIdAsync(id.Value);
+            if(obj == null)
+            {
+                return RedirectToAction(nameof(Error), new { message = "Id not found" });
+            }
+
+            return View(obj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                await _sellerService.RemoveAsync(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (IntegrityException e)
             {
                 return RedirectToAction(nameof(Error), new { message = e.Message });
             }
