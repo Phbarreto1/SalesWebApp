@@ -6,7 +6,7 @@ using SalesWebApp.Services.Exceptions;
 using System.Diagnostics;
 
 // SellersController: Manages 'Seller' CRUD operations.
-// Depends on: 'SellerService' and 'DepartmentService' (dependency injection).
+// Depends on: 'SellerService' and 'DepartmentService' (Dependency Injection).
 
 // SellerFormViewModel:
 // Is used to group 'Seller' data and the 'Departments' collection,
@@ -172,7 +172,7 @@ namespace SalesWebApp.Controllers
         }
 
         // POST: Sellers/Delete/1
-        // Removes the selected Seller from the Database.
+        // Attempts to remove the selected Seller from the Database.
         // If it fails, redirects to Error.
         // If successful, remove Seller from the Database and redirects to Index.
         [HttpPost]
