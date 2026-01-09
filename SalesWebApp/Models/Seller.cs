@@ -26,13 +26,13 @@ namespace SalesWebApp.Models
         [DisplayFormat(DataFormatString = "{0:C2}")]
         public double BaseSalary { get; set; }
 
-        // Navigation property: many Sellers belong to one Department
+        // Navigation property: many Sellers belong to one Department.
         public Department Department { get; set; }
 
-        // Foreign key for Department
+        // Foreign key for Department.
         public int DepartmentId { get; set; }
 
-        // Collection of Sales associated with the Seller
+        // Collection of Sales associated with the Seller.
         public ICollection<SalesRecord> Sales { get; set; } = new List<SalesRecord>();
 
         public Seller()
@@ -49,19 +49,19 @@ namespace SalesWebApp.Models
             Department = department;
         }
 
-        // Adds a sales record to the Seller
+        // Adds a sales record to the Seller.
         public void AddSales(SalesRecord record)
         {
             Sales.Add(record);
         }
 
-        // Removes a sales record from the Seller
+        // Removes a sales record from the Seller.
         public void RemoveSales(SalesRecord record)
         {
             Sales.Remove(record);
         }
 
-        // Calculates the total amount of sales within a date range
+        // Calculates the total amount of sales within a date range.
         public double TotalSales(DateTime initial, DateTime final)
         {
             return Sales.Where(record => record.Date >= initial && record.Date <= final).Sum(record => record.Amount);

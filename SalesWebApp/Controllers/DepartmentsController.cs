@@ -2,27 +2,58 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SalesWebApp.Models;
+using SalesWebApp.Models.ViewModels;
+using SalesWebApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
+// DepartmentsController: Manages 'Department' CRUD operations.
+// Depends on: 'DepartmentService' (Dependency Injection).
+
 namespace SalesWebApp.Controllers
 {
     public class DepartmentsController : Controller
     {
-        private readonly SalesWebAppContext _context;
+        private readonly DepartmentService _departmentService;
 
-        public DepartmentsController(SalesWebAppContext context)
+        public DepartmentsController(DepartmentService departmentService)
         {
-            _context = context;
+            _departmentService = departmentService;
         }
 
         // GET: Departments
+        // Retrieves all Departments and returns them to the Views as a list.
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Department.ToListAsync());
+            var list = await _departmentService.FindAllAsync();
+            return View(list);
+        }
+
+        // GET: Departments/Create
+        // Prepares and returns the Departments creation form.
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Departments/Create
+        // Receives the Department data submitted by the form.
+        // If the model validation fails, returns the form again.
+        // If successful, inserts the Department into the Database and redirects to Index (PRG pattern).
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Department department)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(department);
+            }
+
+            await _departmentService.InsertAsync(department);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Departments/Details/5
@@ -40,28 +71,6 @@ namespace SalesWebApp.Controllers
                 return RedirectToAction(nameof(Error), new { message = "Id not found" });
             }
 
-            return View(department);
-        }
-
-        // GET: Departments/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Departments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Department department)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(department);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
             return View(department);
         }
 
