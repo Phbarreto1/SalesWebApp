@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SalesWebApp.Models;
 using SalesWebApp.Models.ViewModels;
 using SalesWebApp.Services;
+using SalesWebApp.Services.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,7 +57,10 @@ namespace SalesWebApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Departments/Details/5
+        // GET: Departments/Details/1
+        // Retrieves and display details of the selected Department.
+        // If it fails, redirects to Erros (id not provided or not found).
+        // If successful, returns the View with the infos.
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -64,17 +68,19 @@ namespace SalesWebApp.Controllers
                 return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
 
-            var department = await _context.Department
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (department == null)
+            var obj = await _departmentService.FindByIdAsync(id.Value);
+            if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not found" });
             }
 
-            return View(department);
+            return View(obj);
         }
 
-        // GET: Departments/Edit/5
+        // GET: Departments/Edit/1
+        // Retrieves the selected Department and returns data through an edit form.
+        // If it fails, redirects to Error (id not provided or not found).
+        // If successful, returns the View with the edit form.
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -82,47 +88,45 @@ namespace SalesWebApp.Controllers
                 return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
 
-            var department = await _context.Department.FindAsync(id);
-            if (department == null)
+            var obj = await _departmentService.FindByIdAsync(id.Value);
+            if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not found" });
             }
-            return View(department);
+
+            return View(obj);
         }
 
-        // POST: Departments/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Departments/Edit/1
+        // Validates and updates Seller data in the Database.
+        // If the model validation fails, returns the form again.
+        // If successful, updates the Department in the Database and redirects to Index.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Department department)
+        public async Task<IActionResult> Edit(int id, Department department)
         {
+
+            if (!ModelState.IsValid)
+            {
+                return View(department);
+            }
             if (id != department.Id)
             {
-                return RedirectToAction(nameof(Error), new { message = "Id not provided" });
+                return RedirectToAction(nameof(Error), new { message = "Id mismatch" });
             }
-
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    _context.Update(department);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!DepartmentExists(department.Id))
-                    {
-                        return RedirectToAction(nameof(Error), new { message = "Id not found" });
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                await _departmentService.UpdateAsync(department);
                 return RedirectToAction(nameof(Index));
             }
-            return View(department);
+            catch (NotFoundException e)
+            {
+                return RedirectToAction(nameof(Error), new { message = e.Message });
+            }
+            catch (DbConcurrencyException e)
+            {
+                return RedirectToAction(nameof(Error), new { message = e.Message });
+            }
         }
 
         // GET: Departments/Delete/5

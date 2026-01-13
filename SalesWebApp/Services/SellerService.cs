@@ -35,21 +35,6 @@ namespace SalesWebApp.Services
                 .FirstOrDefaultAsync(obj => obj.Id == id);
         }
 
-        // Attempts to remove from the Database a selected Seller by id.
-        // If it fails, throw an Exception.
-        // If successful, locate the Seller (by id) and then removes it from the Database.
-        // Note: if the id doesn't exist, obj may be null.
-        public async Task RemoveAsync(int id) {
-            try {
-                var obj = await _context.Seller.FindAsync(id);
-                _context.Seller.Remove(obj);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException e) {
-                throw new IntegrityException(e.Message);
-            }
-        }
-
         // Attempts to update an existing Seller from the Database.
         // If the id doesn't exist, throws NotFoundException.
         // If there is any conflict, throws DbConcurrencyException.
@@ -68,6 +53,21 @@ namespace SalesWebApp.Services
             catch (DbUpdateConcurrencyException e)
             {
                 throw new DbConcurrencyException(e.Message);
+            }
+        }
+
+        // Attempts to remove from the Database a selected Seller by id.
+        // If it fails, throw an Exception.
+        // If successful, locate the Seller (by id) and then removes it from the Database.
+        // Note: if the id doesn't exist, obj may be null.
+        public async Task RemoveAsync(int id) {
+            try {
+                var obj = await _context.Seller.FindAsync(id);
+                _context.Seller.Remove(obj);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException e) {
+                throw new IntegrityException(e.Message);
             }
         }
     }
