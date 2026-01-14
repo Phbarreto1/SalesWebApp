@@ -2,6 +2,9 @@
 using SalesWebApp.Models;
 using SalesWebApp.Services.Exceptions;
 
+// DepartmentService: Manages data operations for 'Department' using EF Core (DbContext).
+// Depends on: 'SalesWebAppContext' (Dependency Injection).
+
 namespace SalesWebApp.Services
 {
     public class DepartmentService
@@ -16,7 +19,7 @@ namespace SalesWebApp.Services
         // Returns a List of Departments from the Database.
         public async Task<List<Department>> FindAllAsync()
         {
-            return await _context.Department.OrderBy(x => x.Name).ToListAsync();
+            return await _context.Department.OrderBy(x => x.Id).ToListAsync();
         }
 
         // Insert a new Department (object) into the Database.
@@ -51,6 +54,24 @@ namespace SalesWebApp.Services
             catch (DbUpdateConcurrencyException e)
             {
                 throw new DbConcurrencyException(e.Message);
+            }
+        }
+
+        // Attempts to remove from the Database a selected Department by id.
+        // If it fails, throw and Exception.
+        // If successful, locate the Department (by id) and then removes it from the Database.
+        // Note: if the id doesn't exist, obj may be null.
+        public async Task RemoveAsync(int id)
+        {
+            try
+            {
+                var obj = await _context.Department.FindAsync(id);
+                _context.Department.Remove(obj);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException e)
+            {
+                throw new IntegrityException(e.Message);
             }
         }
     }

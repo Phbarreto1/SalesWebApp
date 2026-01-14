@@ -61,7 +61,8 @@ namespace SalesWebApp.Services
         // If successful, locate the Seller (by id) and then removes it from the Database.
         // Note: if the id doesn't exist, obj may be null.
         public async Task RemoveAsync(int id) {
-            try {
+            try 
+            {
                 var obj = await _context.Seller.FindAsync(id);
                 _context.Seller.Remove(obj);
                 await _context.SaveChangesAsync();

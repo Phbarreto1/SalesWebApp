@@ -7,6 +7,7 @@ using SalesWebApp.Services;
 using SalesWebApp.Services.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -129,7 +130,10 @@ namespace SalesWebApp.Controllers
             }
         }
 
-        // GET: Departments/Delete/5
+        // GET: Departments/Delete/1
+        // Retrieves the selected Department and returns a delete confirmation page.
+        // If it fails, redirects to Error (id not provided or not found).
+        // If successful, returns the View with the delete confirmation.
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -137,34 +141,43 @@ namespace SalesWebApp.Controllers
                 return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
 
-            var department = await _context.Department
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (department == null)
+            var obj = await _departmentService.FindByIdAsync(id.Value);
+            if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not found" });
             }
 
-            return View(department);
+            return View(obj);
         }
 
-        // POST: Departments/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: Departments/Delete/1
+        // Attempts to remove the selected Department from the Database.
+        // If it fails, redirects to Error.
+        // If successful, remove Department from the Database and redirects to Index.
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var department = await _context.Department.FindAsync(id);
-            if (department != null)
+            try
             {
-                _context.Department.Remove(department);
+                await _departmentService.RemoveAsync(id);
+                return RedirectToAction(nameof(Index));
             }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            catch
+            {
+                return RedirectToAction(nameof(Error), new { message = "Id not found" });
+            }
         }
 
-        private bool DepartmentExists(int id)
+        public IActionResult Error(string message)
         {
-            return _context.Department.Any(e => e.Id == id);
+            var viewModel = new ErrorViewModel
+            {
+                Message = message,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+
+            return View(viewModel);
         }
     }
 }
